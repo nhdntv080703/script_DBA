@@ -1,0 +1,9 @@
+# Thêm dung lượng vào phân vùng /dev/mapper/ol-root
+- add đĩa 20G
+- pvcreate /dev/sdb (có thể sbc, sdd tùy theo đã add bao nhiêu đĩa)
+- vgextend ol /dev/sdb
+- lvextend -L +20G /dev/mapper/ol-root
+- xfs_growfs /dev/mapper/ol-root
+
+#Thêm dung lượng /u01
+(Lưu ý nên tách riêng u01 riêng biệt, không nằm trong /dev/mapper/ol-root tránh đầy ổ gây lỗi OS và dễ resize dung lượng)
