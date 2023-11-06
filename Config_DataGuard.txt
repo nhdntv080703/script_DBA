@@ -1,0 +1,25 @@
+## Status of Dataguard
+	SELECT name, value, time_computed FROM v$dataguard_stats;
+	(time_computer < 00:16:00) => Oke
+
+## Role of DataGuard
+	select database_role,open_mode from v$database;
+
+##Turn on apply
+	# Foreground redo apply. Phiên không khôi phục cho đến khi chúng ta hủy
+	ALTER DATABASE RECOVER MANAGED STANDBY DATABASE;
+
+	# Background redo apply. Kiểm soát được trả lại cho phiên khi tiến trình apply được bật
+	ALTER DATABASE RECOVER MANAGED STANDBY DATABASE DISCONNECT FROM SESSION;
+
+##Check redo log 
+	-- Ép log switch thủ công.
+	ALTER SYSTEM SWITCH LOGFILE;
+	
+	--Kiểm tra sequence# mới nhất
+	SELECT sequence#, first_time, next_time
+	FROM   v$archived_log
+	ORDER BY sequence#;
+	(sequence ở DR và DC bằng nhau là thành công)
+
+	
