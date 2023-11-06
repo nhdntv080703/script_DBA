@@ -1,0 +1,278 @@
+﻿1.Cơ bản: 
+	- cat /tmp/out.txt: Xem thông tin file /tmp/out.txt
+	- echo "My name is Dung" >> /tmp/out.txt: ghi dòng trong ngoặc vào file /tmp/out.txt
+
+	- ls: Liệt kê tất cả các file, thư mục trong thư mục của chúng ta
+	- ls --help: Tương tự man ls
+		(Có thể kết hợp với những từ khóa khác như cd,su,.....)
+
+	- ls -la /root: Liệt kê các file, thư mục trong thư mục root
+	- ls -la /root > /tmp/out.txt: các nội dung của thư mục root sẽ được ghi vào file /tmp/out.txt
+
+	- l + tab: hiển thị các câu lệnh bắt đầu bằng chữ l
+	- man ls: Xem các option của ls, trợ giúp cách sử dụng lệnh kết hợp ls
+	- mkdir /home/user1_new: tạo thư mục home tên /home/user1_new cho user hiện tại
+	- pwd: xem thư mục hiện tại bạn đang đứng
+	- rpm: tương tự từ khóa yum
+	- su - oracle: Chuyển sang người dùng oracle
+	- yum + option: tải xuất, cài đặt hoặc xóa 1 số gói nào đấy
+
+
+2.Chuyển hướng dòng lệnh:
+	- Có 2 loại: > , >>
+
+	>: Kí tự ">" được sử dụng để điều hướng đầu ra của lệnh vào một tệp tin. Nếu tệp tin đã tồn tại, nó sẽ bị ghi đè bởi đầu ra của lệnh. Nếu tệp tin không tồn tại, một tệp mới sẽ được 		tạo.
+
+		* Ví dụ: ls > file.txt sẽ ghi danh sách các tệp tin và thư mục trong thư mục hiện tại vào tệp tin "file.txt".
+
+	>>: Kí tự ">>" cũng được sử dụng để điều hướng đầu ra của lệnh vào một tệp tin, nhưng khác với ">", nó không ghi đè tệp tin mục tiêu mà thêm đầu ra của lệnh vào cuối tệp tin (nếu 		tệp đã tồn tại).
+
+		* Ví dụ: echo "Hello, world!" >> file.txt sẽ thêm dòng văn bản "Hello, world!" vào cuối tệp tin "file.txt".
+		
+	Lưu ý rằng các kí tự ">" và ">>" chỉ là cách đơn giản để điều hướng đầu ra của lệnh vào tệp tin. Trong thực tế, có nhiều cách khác để xử lý dữ liệu và tệp tin trong hệ thống Linux.
+
+	- Pipe: là khái niệm đưa output dòng lệnh này thành input của dòng 		lệnh kia
+		* vd: ls -al /root | more: Khi câu lệnh ls -al /root có kết quả là danh sách các file, folder thì câu lệnh more sẽ thực hiện dựa trên kết quả mà câu lệnh trên vừa thực hiện
+
+		* vd:find /u01 |grep oracle: tìm kiếm file /u01 và tìm trong file kết quả đó có thư mục hoặc folder nào có tên liên quan đến từ "oracle" không
+
+
+
+
+3. Quản lý user, group:
+
+	*  User
+
+		• Thông tin của user trên hệ điều hành được lưu ở file /etc/passwd
+	
+			- Description: Mô tả
+			- GID: Group id
+			- Home directory: Thư mục gốc của user đó
+			- Password: Mật khẩu
+			- UID: User id
+			- Username: Tên của người dung
+
+		- Shell: là giao diện mà người dùng sử dụng để tương tác với hệ  thống và thực hiện các tác vụ. Mỗi shell cung cấp một loạt các tính năng và khả năng khác nhau dựa trên mục 			đích sử dụng và nhu cầu của người dùng.
+		1. Bourne Shell (sh): Là shell gốc trên hầu hết các hệ thống Unix và Linux. Nó cung cấp một tập lệnh cơ bản và không có nhiều tính năng tương tác. 
+		2. Bash (Bourne Again Shell): Là một phiên bản cải tiến của Bourne Shell. Bash là shell mặc định trên hầu hết các hệ thống Linux và cung cấp nhiều tính năng tương tác, lịch 			sử lệnh, biến môi trường, và nhiều tùy chọn khác. 
+		3. Zsh (Z Shell): Một shell mạnh mẽ với nhiều tính năng tiên tiến, bao gồm dự đoán lệnh, gợi ý tự động, và quản lý tệp tự động. 
+		4. Fish (Friendly Interactive Shell): Shell tương tác dòng lệnh với giao diện thân thiện và tính năng gợi ý tự động mạnh mẽ.
+
+		• Thông tin bảo mất của người dùng được lưu ở file /etc/shadow
+		- /etc/profile: Khi 1 user login vào hệ thống, nó sẽ lấy thông tin trong file này trước gồm các thông tin như PATH (biến môi trường),....File này sẽ chứa tất cả thông tin 			của user
+
+		- id binhtv: hiển thị thông tin UID, GID, group của user binhtv
+		- more /ect/passwd: hiển thị thông tin tất cả user
+		- passwd -l binhtv: khóa tài khoản user binhtv
+		- passwd -u binhtv: mở khóa tài khoản user binhtv
+		- passwd binhtv: đổi mật khẩu user binhtv
+	
+		- useradd -u 412 -d /data/binhtv binhtv: tạo user tên binhtv với UID là 412 và thư mục gốc(home) là /data/binhtv 
+		- userdel binhtv: xóa user binhtv
+		- usermod -d /home/binhtv_new binhtv: thay đổi thư mục home thành /home/binhtv_new
+		- usermod -G group1, group2, group3 binhtv: thay đổi nhóm cho binhtv, binhtv sẽ được 3 nhóm group1,2,3
+		- usermod -s /bin/bash binhtv: thay đổi shell của binhtv
+		- usermod -s /bin/nologin binhtv: khi chuyển sang shell này thì sẽ ngăn user binhtv login trực tiếp vào hệ thống
+
+	*  Group
+		• Thông tin của group trên hệ điều hành được lưu ở file /etc/group
+
+	
+		- groupadd group1: tạo 1 gourp mới tên là group1
+		- groupmod -G 601 group1: thay đổi id của group1
+		- groupdel group1: xóa group1
+		- usermod -G group1, group2, group3 binhtv: chuyển user binhtv từ group khác sang 3 group được khai báo ở trên
+
+	Biến môi trường, các lệnh thực thi khi user đăng nhập trong file: /etc/profile, ~/.bashrc, ~/.bash_profile
+
+
+4. Bật tắt linux
+- Lệnh shutdown:
+	+ init 0: (khuyến khích dùng) sẽ đẩy các buffer xuống đĩa, xong xuôi thì sẽ shutdown các process rồi mới tắt hệ điều hành của chúng ta. Sẽ có trường hợp dùng sẽ bị treo do 			nhiều tiến trình. Gấp quá thì mới dùng poweroff
+	+ poweroff: (không khuyến khích dùng)
+	+ shutdown -h now
+- Lệnh reboot
+   	+ init 6: (khuyển khích dùng)tương tự như init 0
+  	+ reboot: các tiến trình sẽ k đc ghi xuống đĩa mà dừng, tắt luôn( không khuyến khích dùng)
+   	+ shutdown -r now
+
+
+5. Quản lý phần cứng
+	
+	- cat /proc/cpuinfo: xem thông tin cpu
+	- df -h: xem thông tin phần cứng
+	- free -h: xem thông tin ram
+	- fdisk -l: tương tự dh -f nhưng chi tiết hơn
+	- ifconfig -a hoặc ip a: kiểm tra card mạng
+	- ifup eth0: cấp địa chỉ mạng mới cho máy
+
+
+6. Quản lý đĩa (disk), storage
+	
+	- fdisk -l: xem thông tin đĩa
+	- multipath -ll: xem thông tin multipath
+
+
+7. Quản lý file, thư mục
+	- echo “ABC” > /data/test.txt: tạo file test.txt và ghi chuỗi “ABC” vào file
+	- ls -la /home: xem thư mục
+	- ls /home: tương tự ls -la /home
+	- more /etc/passwd: xem nội dung tập tin (ngoài ra sử dụng cat, less, head, tail,...)
+	- mkdir /data: tạo thư mục tên /data
+	- mkdir -p /data/backup/solaris: tạo đồng thời 3 thư mục theo thứ tự giảm dần
+	- touch /text.txt: tạo tập tin rỗng
+	- vi /tex.txt: tạo tập tỉn rỗng 
+	
+	* Sửa file:
+	# vi test.txt: dùng vi để mở 1 file. Nếu file này chưa tồn tại sẽ được tạo mới
+		+ a: Vào mode insert từ ký tự bên phải
+		+ i:Vào mode insert từ ký tự bên trái
+		+ dd: Xóa 1 dòng
+		+ g: Đi tới đầu văn bản
+		+ G: Đi tới cuối văn bản
+       + p: Paste
+		+ :q!: Thoát và không lưu
+		+ :wq: Thoát và lưu văn bản
+		+ x: Xóa 1 kí tự
+		+ yy: Sao chép dòng
+		+ 1-99%%: Đi tới số % của văn bản
+
+       *  Xóa file
+  	 + cd ../: ra khỏi thư mục
+	 + ln /data.txt /data1.txt: tạo 1 bản sao từ data sang data1( link, liên kết tập tin)
+ 	 + pwd: xem thư mục hiện hành ta đang đứng 
+   	 + rm -rf /export/home/binhtv/test1.txt: xóa file test1.txt
+         
+
+       * Tìm kiếm
+      	 + find /data -name test.txt: tìm kiếm file test.txt trong thư mục hiện hành
+    		  + find /data3 -type f exec grep -| ‘123’ {} \: tìm tất cả có kiểu là file và tìm chuỗi là 123 trong các file đó
+	        + which ls: tìm thư mục chứa lệnh ls
+  	 + cat /data/test.txt |grep 123: tìm đoạn có chứa 123 trong  file
+
+       * Nén file
+       	+ gzip /data/test1.txt: nén file test1.txt
+       	+ gunzip /data/test1.txt.gz:	nén file test1.txt
+
+
+8. Quản lý file system
+	
+	+ fdisk: Xem, tạo, xóa partition (phân vùng)
+   	+ fsck: chuẩn đoán và sửa lỗi file system
+		Vd: fsck -a /dev/sda4: nó sẽ quét tất cả login của partition này và tự fix các lỗi để trả lại cho chúng ta. Nếu lỗi quá thì phải có các phương án xử lý khác. Move sang 1 partion khác và fix. Nếu lỗi ở mức độ block thì là lỗi vật lý không phải logic, khi đó fsck không thể xử lý được. Lỗi logic thì fsck có thể xử lý được hết.
+		fsck có thể áp dụng cho tất cả các hệ thống Unix, Solaris
+	
+	NFS file system: là 1 giao thức cho phép dùng 1 phân vùng SAN hoặc phân vùng lưu trữ nào đó mount cho máy A1, A2 có thể sử dụng và đọc ghi được
+	
+	+ share -F -o ro, public /export/share_folder: Tạo 1 thư mục share theo giao thức NFS
+	+ share -F nfs: kiểm tra xem các file system đã share chưa
+	+ mount -F nfs 192.168.1.88:ẽport/share_folder /mnt/88_share: mount trên client và sử dụng
+	+ showmount -e: liệt kê các file system có thể mount
+
+	Logical Volume Management:
+
+9. Quản lý dịch vụ
+	
+	+ chkconfig: kiểm tra các dịch vụ xem các dịch vụ nào cho phép được bật cùng với OS
+	+ chkconfig ip6tables off: bỏ dịch vụ khời động khi boot OS
+	+ chkconfig ip6tables on: thêm dịch vụ khởi động khi boot OS
+	+ service –sstatusall: Kiểm tra tất cả dịch vụ và trạng thái của nó
+		VD: service -staus-all |grep ip6tables
+	+ service ip6tables start: bật dịch vụ ip6tables
+	+ /etc/init.d/ip6tables start: bật dịch vụ ip6tables
+	+ service ip6tables stop: tắt dịch vụ
+	+ /etc/init.d/ip6tables stop: tắt dịch vụ ip6tables
+	+ service ip6tables restart: restart dịch vụ
+	+ /etc/init.d/ip6tables restart: restart dịch vụ ip6tables
+
+
+10. Quản lý tiến trình
+	
+	• Khi 1 tiến trình sinh ra 1 tiến trình khác thì tiến trình được sinh ra gọi là tiến trình con. Khi tiến trình con chạy thì tiến trình cha phải chờ. Khi con hoàn thành thì cha sẽ 		tiếp tục các công việc
+	• Các trạng thái của tiến trình:
+		- Run: Đang chạy
+		- Sleep Đang chờ hoạt động
+		- Zombie: cha đã kết thúc mà tiến trình con vẫn còn chạy
+		- Stop: Đã dừng hoạt động
+	
+
+      	-  kill -9: kết thúc tiến trình ngay lập tức, giải phóng tài nguyên luôn (dùng khẩn cấp)
+	-  kill -15: chờ tiến trình chạy xong (trường hợp dùng kill -15 không tắt được thì buộc phải dùng kill -9) 
+	-  ps -ef: Liệt kê các tiến trình đang hoạt động trên system
+	-  ps -fu oracle: hiển thị các tiến trình của user oracle
+	-  pgrep -l java: hiển thị các tiến trình chạy java
+	-  pkill: kết thúc 1 hoặc nhiều tiến trình theo tên hoặc thuộc tính    	của các tiến trình
+		VD: pkill Java: kill tất cả các tiến trình java trên máy chủ
+	(sử dụng cẩn thận, có thể kill nhầm các tiến trình java quan trọng)
+	-  top: hiển thị các trạng thái của các tiến trình đang hoạt động trong hệ thống theo chiều giảm dần
+	
+	• Đặt lịch tiến trình chạy tự động:
+	• at time [date]
+	• at -r: hủy 1 job bằng lệnh at
+	• yum install at: dowload gói at
+
+	• crontab -l: liệt kê các crontab của user chạy lệnh
+	• crontab -e: sửa crontab
+
+
+11. Quản lý tài nguyên
+
+   
+	-  free -h: hiển thị tất cả thông tin về memory
+	-  iostat -xnd 2 2: thống kê i/o của các thiết bị ngoại vi (2s/lần, 2 lần)
+	-  ping: nếu thời gian (cột time) phản hồi không đều, lúc nhanh lúc chậm thì nên chú ý
+
+	-  top: không những giám sát process, lệnh này còn giúp giám sát cpu, memory, swap
+	-  traceruote: xác định điểm (hốp mạng) bị yếu
+	-  vmstat 1 100: show CPU usage theo thời gian, phân chia theo user, (1s/ lần, 100 lần). Tham số 1,100 có thể thay đổi
+	-  ....:lấy ra danh sách process sử dụng nhiều CPU
+
+
+12. Bảo mật Linux
+
+	Tên quyền		Ký hiệu		Dạng số		   Mô tả
+	     Read			r			4	Quyền đọc file
+	    Write			w			2	Quyền ghi file
+	 Execute			x			1	Quyền thực thi
+		
+	- chmod 755 test.txt: thay đổi quyền cho file test.txt
+	( 7 = 4 + 2 + 1 tương đương user có cả 3 quyền
+ 	  5 = 4 + 1 tương đương group có quyền read và execute
+ 	  5 = 4 + 1 tương đương other có quyền read và execute
+	- chmod 600 /data: thay đổi quyền cho thư mục data)
+	( chỉ có user có quyền vì 2 nhóm kia đều là 0, 0
+  	 6 = 4 + 2 tương đương user có quyền read và write)
+	- chown binhtv : dba test.txt: thay đổi chủ sở hữu của tệp tin "test.txt" thành người dùng "binhtv" và nhóm sở hữu thành "dba". Dấu hai chấm (:) được sử dụng để chỉ định chủ sở hữu 		và nhóm sở hữu cùng một lúc.
+	- chown binhtv /backup: chuyển quyền sở hữu thư mục /backup là của user binhtv
+	- cat /etc/ssh/sshd_config | grep “PermitRootLogin”: chặn root login SSH(login từ xa vào hệ thống)
+	- cat /etc/ssh/sshd_config | grep “DenyUsers”: chặn user login SSH(login từ xa vào hệ thống)
+
+
+13. Quản lý mạng Linux
+	
+	- /etc/hosts: cấu hình host
+	- /etc/resolv.conf: cấu hình DNS client
+	- ifconfig -a: kiểm tra thông tin IP
+	- ip a: tương tự ifconfig nhưng chỉ dùng được trên linux
+	- netstat -nat: hiển thị tất cả kết nối trên server
+	- netstat -nat | grep LISTEN: hiển thị các port đang open trên server
+	- ping -s IP_ADDRESS:kiểm kết nối mạng và xem 1 ip cụ thể có khả năng truyền thông tin qua mạng không. Nếu trường thời gian đều nhau thì mạng đang ổn định
+	- route -n: hiện thị thông tin của route
+	- route add -net 192.168.11.0 netmask 255.255.255.0 gw 192.168.11.2 eth0: tạo route tĩnh
+	- route delete -net 192.168.11.0 netmask 255.255.255.0 gw 192.168.11.2 eth0: xóa route
+	- service network restart: khởi động lại dịch vụ mạng
+	- traceroute IP_ADDRESS: xem từ A đến B đi qua bao nhiêu host(bao nhiêu chặng)
+	- telnet IP_ADDRESS port: kiểm tra xem port đó có thể mở hay không, nếu đang ở trạng thái CONNECTED là đc mở
+	- tcpdump: capture các gói tin trên OS
+	- tcpdump src port 22: bắt gói tin trên port 22
+	- tcp dst IP_ADDRESS: bắt gói tin trên 1 IP đích cụ thể
+	- tcp dst 192.168.11.4 and src port 22 -w FILE_NAME.pcap: ghi thông tin bắt được capture từ địa chỉ ip và port trên ra file
+	- tcpdumo portrange 21-25 -c n: bắt gói tin theo 1 range port và chỉ lấy n gói tin
+	- vi /etc/sysconfig/nettwork-scripts/icfg-eth1: sửa file với card mạng là eth1. Biến BOOTPROTO=static
+
+
+14. FTP, NTP, Web Server
+	
+
+
+
